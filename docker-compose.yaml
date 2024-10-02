@@ -22,11 +22,10 @@ services:
     restart: always
     tty: true
     volumes:
-      - ./mysql:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
-    command: bash -c "chown -R mysql:mysql /var/lib/mysql && mysqld --innodb-use-native-aio=0 --ssl=0"
     networks:
       - application-network
     healthcheck:
@@ -51,3 +50,6 @@ services:
 networks:
   application-network:
     driver: bridge
+
+volumes:
+  mysql-data:
