@@ -18,7 +18,6 @@ services:
   
   db:
     image: mysql:8.0
-    command: --innodb-use-native-aio=0
     container_name: db
     restart: always
     tty: true
@@ -27,6 +26,7 @@ services:
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
+    command: bash -c "chown -R mysql:mysql /var/lib/mysql && mysqld --innodb-use-native-aio=0 --ssl=0"
     networks:
       - application-network
     healthcheck:

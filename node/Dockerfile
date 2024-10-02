@@ -10,6 +10,10 @@ WORKDIR /usr/src/app
 
 COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
 
+RUN apk add --no-cache bash
+
+RUN npm init -y
+
 COPY package*.json ./
 RUN npm install --only=production
 
