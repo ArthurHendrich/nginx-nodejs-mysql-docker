@@ -5,17 +5,23 @@ services:
     build:
       context: node
     container_name: app
-    command: dockerize -wait tcp://db:3306 -timeout 50s node index.js
+    environment:
+      - NODE_ENV=production
+    command: >
+      sh -c 'if [ "$NODE_ENV" = "development" ]; then
+                dockerize -wait tcp://db:3306 -timeout 50s nodemon index.js;
+              else
+                dockerize -wait tcp://db:3306 -timeout 50s node index.js;
+              fi'
     networks:
       - application-network
     tty: true
-    ports:
-      - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - ./node:/usr/src/app
+      - /usr/src/app/node_modules
 
   db:
     image: mysql:8.0

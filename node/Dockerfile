@@ -12,13 +12,11 @@ COPY --from=dockerize /usr/local/bin/dockerize /usr/local/bin/dockerize
 
 RUN apk add --no-cache bash
 
-RUN npm init -y
-
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm install
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["dockerize", "-wait", "tcp://db:3306", "-timeout", "50s", "node", "index.js"]
+CMD ["node", "index.js"]
